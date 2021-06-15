@@ -10,14 +10,14 @@
     <string name="_8">8</string>
     <string name="_9">9</string>
     <string name="_0">0</string>
-    <string name="_10">X</string>
-    <string name="_11">-</string>
-    <string name="_12">+</string>
-    <string name="_13">=</string>
-    <string name="_14">ac</string>
-    <string name="_15">+/-</string>
-    <string name="_16">%</string>
-    <string name="_17">÷</string>
+    <string name="_multiply">X</string>
+    <string name="_minus">-</string>
+    <string name="_plus">+</string>
+    <string name="_equals">=</string>
+    <string name="_ac">ac</string>
+    <string name="_plus_minus">+/-</string>
+    <string name="_percent">%</string>
+    <string name="_division">÷</string>
     <string name="_point">.</string>
     <string name="text_view_info">0</string>
 </resources>
