@@ -4,284 +4,72 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DecimalFormat;
-import java.util.Locale;
+import com.example.calculator.actions.ActionType;
 
-public class MainActivity<decimalFormat> extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CalculatorCallback {
 
-    private Button button1;
-    private Button button2;
-    private Button button3;
-    private Button button4;
-    private Button button5;
-    private Button button6;
-    private Button button7;
-    private Button button8;
-    private Button button9;
-    private Button button0;
-    private Button buttonAC;
-    private Button buttonPlusMinus;
-    private Button buttonPercent;
-    private Button buttonDivision;
-    private Button buttonMultiply;
-    private Button buttonPoint;
-    private Button buttonEquals;
-    private Button buttonPlus;
-    private Button buttonMinus;
     private TextView textView;
-    private double valueOne = Double.NaN;
-    private double valueTwo;
-    private static final char ADDITION = '+';
-    private static final char SUBTRACTION = '-';
-    private static final char MULTIPLICATION = '*';
-    private static final char DIVISION = '/';
-    private static final char PERCENTAGE = '%';
-    private static final char NEGATIVE = '-';
-    private char CURRENT_ACTION;
-    private DecimalFormat decimalFormat;
+    private Calculator calculator = new Calculator(this);
 
-    public MainActivity() {
-    }
+    private static final CalcButton[] DIGIT_BUTTONS = {
+            new CalcButton(R.id.button_1, R.string._1),
+            new CalcButton(R.id.button_2, R.string._2),
+            new CalcButton(R.id.button_3, R.string._3),
+            new CalcButton(R.id.button_4, R.string._4),
+            new CalcButton(R.id.button_5, R.string._5),
+            new CalcButton(R.id.button_6, R.string._6),
+            new CalcButton(R.id.button_7, R.string._7),
+            new CalcButton(R.id.button_8, R.string._8),
+            new CalcButton(R.id.button_9, R.string._9),
+            new CalcButton(R.id.button_0, R.string._0),
+            new CalcButton(R.id.button_point, R.string._point)
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        decimalFormat = new DecimalFormat("#.##########");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViews();
-//        setOnClickListeners();
+        initViews();
     }
 
-    private void findViews() {
-
-        button1 = findViewById(R.id.button_1);
-        button2 = findViewById(R.id.button_2);
-        button3 = findViewById(R.id.button_3);
-        button4 = findViewById(R.id.button_4);
-        button5 = findViewById(R.id.button_5);
-        button6 = findViewById(R.id.button_6);
-        button7 = findViewById(R.id.button_7);
-        button8 = findViewById(R.id.button_8);
-        button9 = findViewById(R.id.button_9);
-        button0 = findViewById(R.id.button_0);
-        buttonAC = findViewById(R.id.button_ac);
-        buttonPlusMinus = findViewById(R.id.button_plus_minus);
-        buttonPercent = findViewById(R.id.button_percent);
-        buttonDivision = findViewById(R.id.button_division);
-        buttonMultiply = findViewById(R.id.button_multiply);
-        buttonPoint = findViewById(R.id.button_point);
-        buttonEquals = findViewById(R.id.button_equals);
-        buttonPlus = findViewById(R.id.button_plus);
-        buttonMinus = findViewById(R.id.button_minus);
-        textView = findViewById(R.id.textView);
-
-
-        buttonPoint.setOnClickListener(v -> {
-            String Point = textView.getText().toString();
-            if (Point.contains(getString(R.string._point))) {
-                v.setClickable(false);
-            } else {
-                textView.setText(textView.getText().toString() + getString(R.string._point));
-            }
-        });
-
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._1));
-            }
-        });
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._2));
-            }
-        });
-
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._3));
-            }
-        });
-
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._4));
-            }
-        });
-
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._5));
-            }
-        });
-
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._6));
-            }
-        });
-
-        button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._7));
-            }
-        });
-
-        button8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._8));
-            }
-        });
-
-        button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._9));
-            }
-        });
-
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textView.setText(decimalFormat.format(valueOne));
-            }
-
-
-        });
-        buttonAC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                valueOne = Double.NaN;
-                valueTwo = Double.NaN;
-                textView.setText("");
-            }
-        });
-
-
-        buttonPercent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = PERCENTAGE;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
-
-        buttonMultiply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = MULTIPLICATION;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
-
-        buttonDivision.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = DIVISION;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
-
-        buttonEquals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                valueOne = Double.NaN;
-                CURRENT_ACTION = '0';
-            }
-
-        });
-
-        buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = ADDITION;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
-
-        buttonMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = NEGATIVE;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-        });
-
-        buttonPlusMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               /* CURRENT_ACTION = NEGATIVE;
-                Calculations();
-//                textView.setText("-" + textView.getText().toString());
-//                textView.setText(null);*/
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(MainActivity.this,
-                        R.string.surpise,
-                        duration);
-                toast.setGravity(Gravity.TOP, 0, 0);
-                toast.show();
-            }
-        });
+    @Override
+    public void onActionComplete(final String result) {
+        textView.setText(result);
     }
 
-
-    private void Calculations() {
-        {
-            if(!Double.isNaN(valueOne)) {
-                valueTwo = Double.parseDouble(textView.getText().toString());
-                textView.setText(null);
-                if(CURRENT_ACTION == ADDITION)
-                    valueOne = this.valueOne + valueTwo;
-                else if(CURRENT_ACTION == SUBTRACTION)
-                    valueOne = this.valueOne - valueTwo;
-                else if(CURRENT_ACTION == MULTIPLICATION)
-                    valueOne = this.valueOne * valueTwo;
-                else if(CURRENT_ACTION == DIVISION)
-                    valueOne = this.valueOne / valueTwo;
-                else if(CURRENT_ACTION == PERCENTAGE)
-                    valueOne = (this.valueOne / valueTwo) /100;
-             /*   else if(CURRENT_ACTION == NEGATIVE)
-                    valueOne = (this.valueOne * (-1));*/
-            }
-            else {
-                try {
-                    valueOne = Double.parseDouble(textView.getText().toString());
-                }
-                catch (Exception e){
-
-                }
+    @SuppressWarnings("ObjectAllocationInLoop")
+    private void initDigitButtons(TextView valueTextView) {
+        for(CalcButton calcButton : DIGIT_BUTTONS) {
+            View button = findViewById(calcButton.getViewId());
+            if (button != null) {
+                button.setOnClickListener(
+                        new DigitButtonClickListener(
+                                getString(calcButton.getLabelId()).charAt(0),
+                                calculator
+                        )
+                );
             }
         }
-
     }
+
+    private void initActionButtons() {
+        findViewById(R.id.button_ac).setOnClickListener(v -> calculator.clear());
+        findViewById(R.id.button_plus_minus).setOnClickListener(v -> calculator.doAction(ActionType.NEGATIVE));
+        findViewById(R.id.button_percent).setOnClickListener(v -> calculator.doAction(ActionType.PERCENTAGE));
+        findViewById(R.id.button_division).setOnClickListener(v -> calculator.doAction(ActionType.DIVISION));
+        findViewById(R.id.button_multiply).setOnClickListener(v -> calculator.doAction(ActionType.MULTIPLICATION));
+        findViewById(R.id.button_equals).setOnClickListener(v -> calculator.doAction(ActionType.CALCULATION));
+        findViewById(R.id.button_plus).setOnClickListener(v -> calculator.doAction(ActionType.ADDITION));
+        findViewById(R.id.button_minus).setOnClickListener(v -> calculator.doAction(ActionType.SUBTRACTION));
+    }
+
+    private void initViews() {
+        textView = findViewById(R.id.textView);
+        initDigitButtons(textView);
+        initActionButtons();
+    }
+
 }
