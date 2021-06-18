@@ -17,4 +17,19 @@
             <item name="colorControlHighlight">@color/black</item>
              <item name="colorAccent">#310E6D</item>-->
     </style>
+
+    <style name="MyStyle">
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:textColor">#310E6D</item>
+        <item name="android:layout_marginStart">@dimen/margin</item>
+        <item name="android:layout_marginEnd">@dimen/margin</item>
+        <item name="android:layout_marginTop">@dimen/margin</item>
+        <item name="android:layout_marginBottom">@dimen/margin</item>
+        <item name="android:fontFamily">bold</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <dimen name="textSize">40sp</dimen>
+    <dimen name="margin">5dp</dimen>
 </resources>

@@ -46,8 +46,12 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
     private char CURRENT_ACTION;
     private DecimalFormat decimalFormat;
 
+
+
     public MainActivity() {
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,25 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
         buttonMinus = findViewById(R.id.button_minus);
         textView = findViewById(R.id.textView);
 
+
+        class ActionClickListener implements View.OnClickListener{
+            private char current_action;
+            ActionClickListener(char current_action){
+                this.current_action = current_action;
+            }
+            public void onClick(View v){
+                CURRENT_ACTION = current_action;
+                Calculations();
+                textView.setText(decimalFormat.format(valueOne));
+                textView.setText(null);
+            }
+        }
+
+        ActionClickListener division = new ActionClickListener(DIVISION);
+        ActionClickListener multiplication = new ActionClickListener(MULTIPLICATION);
+        ActionClickListener substraction = new ActionClickListener(SUBTRACTION);
+        ActionClickListener addition = new ActionClickListener(ADDITION);
+        ActionClickListener percantage = new ActionClickListener(PERCENTAGE);
 
         buttonPoint.setOnClickListener(v -> {
             String Point = textView.getText().toString();
@@ -122,7 +145,7 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                textView.setText(textView.getText().toString() + getString(R.string._5));
+                TextDigitButton();
             }
         });
 
@@ -172,38 +195,20 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
         });
 
 
-        buttonPercent.setOnClickListener(new View.OnClickListener() {
+        buttonPercent.setOnClickListener(percantage);
+        buttonMultiply.setOnClickListener(multiplication);
+        buttonDivision.setOnClickListener(division);
+        buttonPlus.setOnClickListener(addition);
+        buttonMinus.setOnClickListener(substraction);
+        /*{
             @Override
             public void onClick(View v) {
-                CURRENT_ACTION = PERCENTAGE;
+                CURRENT_ACTION = NEGATIVE;
                 Calculations();
                 textView.setText(decimalFormat.format(valueOne));
                 textView.setText(null);
             }
-
-        });
-
-        buttonMultiply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = MULTIPLICATION;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
-
-        buttonDivision.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = DIVISION;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
+        });*/
 
         buttonEquals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,34 +221,10 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
 
         });
 
-        buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = ADDITION;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-
-        });
-
-        buttonMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CURRENT_ACTION = NEGATIVE;
-                Calculations();
-                textView.setText(decimalFormat.format(valueOne));
-                textView.setText(null);
-            }
-        });
 
         buttonPlusMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* CURRENT_ACTION = NEGATIVE;
-                Calculations();
-//                textView.setText("-" + textView.getText().toString());
-//                textView.setText(null);*/
                 int duration = Toast.LENGTH_LONG;
                 Toast toast = Toast.makeText(MainActivity.this,
                         R.string.surpise,
@@ -252,6 +233,11 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
                 toast.show();
             }
         });
+
+    }
+
+    private void TextDigitButton() {
+        textView.setText(textView.getText().toString() + getString(R.string._5));
     }
 
 
@@ -270,8 +256,6 @@ public class MainActivity<decimalFormat> extends AppCompatActivity {
                     valueOne = this.valueOne / valueTwo;
                 else if(CURRENT_ACTION == PERCENTAGE)
                     valueOne = (this.valueOne / valueTwo) /100;
-             /*   else if(CURRENT_ACTION == NEGATIVE)
-                    valueOne = (this.valueOne * (-1));*/
             }
             else {
                 try {
